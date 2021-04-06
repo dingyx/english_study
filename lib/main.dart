@@ -40,19 +40,25 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _ranInt = 0;
   String _wordStr = "word";
+  String _phoneticStr = "音标";
   String _wordTran = "单词翻译";
 
   void _genWord() {
     setState(() {
       _ranInt = new Random().nextInt(3878);
       _wordStr = _wordList[_ranInt].word;
-      _wordTran = "";
+      _phoneticStr = " ";
+      _wordTran = "  ";
     });
   }
 
   void _genTranslate() {
     setState(() {
-      _wordTran = _wordList[_ranInt].translate;
+      String tranStr = _wordList[_ranInt].translate;
+      _phoneticStr = tranStr.substring(
+          tranStr.indexOf("[", 0), tranStr.indexOf("]", 0) + 1);
+      _wordTran =
+          tranStr.substring(tranStr.indexOf("]", 0) + 1, tranStr.length);
     });
   }
 
@@ -71,8 +77,12 @@ class _MyHomePageState extends State<MyHomePage> {
               style: Theme.of(context).textTheme.headline3,
             ),
             Text(
+              _phoneticStr,
+              style: Theme.of(context).textTheme.subtitle1,
+            ),
+            Text(
               _wordTran,
-              style: Theme.of(context).textTheme.headline5,
+              style: Theme.of(context).textTheme.subtitle1,
             ),
           ],
         ),
