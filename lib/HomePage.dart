@@ -5,6 +5,7 @@ import 'package:english_study/data.dart';
 import 'package:english_study/style.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key, this.title}) : super(key: key);
@@ -133,6 +134,9 @@ class _MyHomePageState extends State<HomePage> {
                             Container(
                                 width: 60,
                                 child: CupertinoTextField(
+                                    inputFormatters: [
+                                      FilteringTextInputFormatter.allow(RegExp("[0-9]"))
+                                    ],
                                     textAlign: TextAlign.center,
                                     controller: _wordEditController)),
                             SizedBox(width: 30),
@@ -140,6 +144,9 @@ class _MyHomePageState extends State<HomePage> {
                             Container(
                                 width: 60,
                                 child: CupertinoTextField(
+                                    inputFormatters: [
+                                      FilteringTextInputFormatter.allow(RegExp("[0-9]"))
+                                    ],
                                     textAlign: TextAlign.center,
                                     controller: _tranEditController)),
                           ]),

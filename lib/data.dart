@@ -8,13 +8,15 @@ class WordBean {
   int id;
   String translate;
   String word;
+  String read;
 
-  WordBean({this.id, this.translate, this.word});
+  WordBean({this.id, this.translate, this.word, this.read});
 
   WordBean.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     translate = json['translate'];
     word = json['word'];
+    read = json['read'];
   }
 
   Map<String, dynamic> toJson() {
@@ -22,6 +24,7 @@ class WordBean {
     data['id'] = this.id;
     data['translate'] = this.translate;
     data['word'] = this.word;
+    data['read'] = this.read;
     return data;
   }
 }
@@ -42,20 +45,17 @@ class WordData {
 
   // 获取单词
   static String getWord() {
-    _ranInt = new Random().nextInt(3878);
+    _ranInt = new Random().nextInt(3876);
     return _wordList[_ranInt].word;
   }
 
   // 获取翻译
   static String getTran() {
-    String tranStr = _wordList[_ranInt].translate;
-    return tranStr.substring(tranStr.indexOf("]", 0) + 1, tranStr.length);
+    return _wordList[_ranInt].translate;
   }
 
   // 获取音标
   static String getPhoneticSymbols() {
-    String tranStr = _wordList[_ranInt].translate;
-    return tranStr.substring(
-        tranStr.indexOf("[", 0), tranStr.indexOf("]", 0) + 1);
+    return _wordList[_ranInt].read;
   }
 }
