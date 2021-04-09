@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:english_study/Utils.dart';
 import 'package:english_study/data.dart';
 import 'package:english_study/style.dart';
 import 'package:flutter/cupertino.dart';
@@ -16,6 +17,7 @@ class HomePage extends StatefulWidget {
 class _MyHomePageState extends State<HomePage> {
   TextEditingController _wordEditController = TextEditingController();
   TextEditingController _tranEditController = TextEditingController();
+  TTS tts = TTS();
 
   String _wordStr = "word";
   String _phoneticStr = "phonetic symbols";
@@ -29,11 +31,16 @@ class _MyHomePageState extends State<HomePage> {
   void _startTimer() {
     _timer = Timer.periodic(
         Duration(seconds: int.parse(_wordEditController.text)), (timer) {
+      // 显示单词
       setState(() {
         _wordStr = WordData.getWord();
         _phoneticStr = " ";
         _wordTran = " ";
       });
+      // 朗读读单词
+
+      tts.speak(_wordStr);
+      // 延迟显示音标、翻译
       Future.delayed(Duration(seconds: int.parse(_tranEditController.text)),
           () {
         setState(() {
@@ -51,73 +58,65 @@ class _MyHomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     WordData.init();
+    tts.init("en-US", 1.0, 0.6, 1.2);
     return Scaffold(
-      body: GestureDetector(
-        behavior: HitTestBehavior.translucent,
-        onTap: () {
-          FocusScope.of(context).requestFocus(FocusNode());
-        },
-        child: Container(
-          decoration: BoxDecoration(
-            image: DecorationImage(
-                image: AssetImage("assets/images/bg.jpg"), fit: BoxFit.cover),
-          ),
-          child: Center(
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              children: <Widget>[
-                Expanded(
-                  child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Text(_wordStr, style: Styles.textLarge),
-                        Text(_phoneticStr, style: Styles.textNormal),
-                        Text(_wordTran, style: Styles.textNormal),
-                      ]),
+        body: GestureDetector(
+            behavior: HitTestBehavior.translucent,
+            onTap: () {
+              FocusScope.of(context).requestFocus(FocusNode());
+            },
+            child: Container(
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image: AssetImage("assets/images/bg.jpg"),
+                      fit: BoxFit.cover),
                 ),
-                Row(
-                //  mainAxisSize: MainAxisSize.max, //根据 parent
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text("Word Timer:", style: Styles.textSmall),
-                    Container(
-                      width: 60,
-                      child: CupertinoTextField(
-                        controller: _wordEditController,
-                      ),
-                    ),
-                    SizedBox(width: 30,),
-                    Text("Translate Delay:", style: Styles.textSmall),
-                    Container(
-                      width: 60,
-                      child: CupertinoTextField(
-                        controller: _tranEditController,
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 30),
-                CupertinoSwitch(
-                  value: _switchValue,
-                  onChanged: (bool value) {
-                    setState(() {
-                      _switchValue = value;
-                    });
-                    // 点击按钮 启动关闭Timer
-                    if (value) {
-                      _startTimer();
-                    } else {
-                      _cancelTimer();
-                    }
-                    FocusScope.of(context).requestFocus(FocusNode());
-                  },
-                ),
-                SizedBox(height: 20),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
+                child: Center(
+                    child: Column(
+                        mainAxisSize: MainAxisSize.max,
+                        children: <Widget>[
+                      Expanded(
+                          child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                            Text(_wordStr, style: Styles.textLarge),
+                            Text(_phoneticStr, style: Styles.textNormal),
+                            Text(_wordTran, style: Styles.textNormal),
+                          ])),
+                      Row(
+                          //  mainAxisSize: MainAxisSize.max, //根据 parent
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Text("Word Timer:", style: Styles.textSmall),
+                            Container(
+                                width: 60,
+                                child: CupertinoTextField(
+                                    textAlign: TextAlign.center,
+                                    controller: _wordEditController)),
+                            SizedBox(width: 30),
+                            Text("Translate Delay:", style: Styles.textSmall),
+                            Container(
+                                width: 60,
+                                child: CupertinoTextField(
+                                    textAlign: TextAlign.center,
+                                    controller: _tranEditController)),
+                          ]),
+                      SizedBox(height: 30),
+                      CupertinoSwitch(
+                          value: _switchValue,
+                          onChanged: (bool value) {
+                            setState(() {
+                              _switchValue = value;
+                            });
+                            // 点击按钮 启动关闭Timer
+                            if (value) {
+                              _startTimer();
+                            } else {
+                              _cancelTimer();
+                            }
+                            FocusScope.of(context).requestFocus(FocusNode());
+                          }),
+                      SizedBox(height: 20)
+                    ])))));
   }
 }
