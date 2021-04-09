@@ -19,27 +19,38 @@ class _MyHomePageState extends State<HomePage> {
   TextEditingController _tranEditController = TextEditingController();
   TTS tts = TTS();
 
+  String _ttsImgPath = "assets/images/sound_normal.png";
   String _wordStr = "word";
   String _phoneticStr = "phonetic symbols";
   String _wordTran = "translate";
 
-  bool _switchValue = false;
+  // 单词 Timer 是否启动
+  bool _isStudyStart = false;
+
+  // 是否启动TTS
+  bool _isTTS = true;
+
+  // 出现单词个数
+  int _wordCount = 0;
 
   // 定时器
   Timer _timer;
 
+  // 启动定时器
   void _startTimer() {
     _timer = Timer.periodic(
         Duration(seconds: int.parse(_wordEditController.text)), (timer) {
       // 显示单词
       setState(() {
+        ++_wordCount;
         _wordStr = WordData.getWord();
         _phoneticStr = " ";
         _wordTran = " ";
       });
       // 朗读读单词
-
-      tts.speak(_wordStr);
+      if (_isTTS) {
+        tts.speak(_wordStr);
+      }
       // 延迟显示音标、翻译
       Future.delayed(Duration(seconds: int.parse(_tranEditController.text)),
           () {
@@ -51,16 +62,20 @@ class _MyHomePageState extends State<HomePage> {
     });
   }
 
+  // 取消定时器
   void _cancelTimer() {
     _timer?.cancel();
   }
 
   @override
   Widget build(BuildContext context) {
+    // 初始化数据、TTS
     WordData.init();
     tts.init("en-US", 1.0, 0.6, 1.2);
+
     return Scaffold(
         body: GestureDetector(
+            // 点击外部时 输入框失去焦点
             behavior: HitTestBehavior.translucent,
             onTap: () {
               FocusScope.of(context).requestFocus(FocusNode());
@@ -75,6 +90,34 @@ class _MyHomePageState extends State<HomePage> {
                     child: Column(
                         mainAxisSize: MainAxisSize.max,
                         children: <Widget>[
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Padding(
+                            padding: EdgeInsets.only(left: 40, top: 40),
+                            child: Text(_wordCount.toString(),
+                                style: Styles.textNormal),
+                          ),
+                          InkWell(
+                              child: Padding(
+                                padding: EdgeInsets.only(right: 40, top: 40),
+                                child: Image.asset(_ttsImgPath,
+                                    width: 40, height: 40),
+                              ),
+                              onTap: () {
+                                _isTTS = !_isTTS;
+                                setState(() {
+                                  if (_isTTS) {
+                                    _ttsImgPath =
+                                        "assets/images/sound_normal.png";
+                                  } else {
+                                    _ttsImgPath =
+                                        "assets/images/sound_mute.png";
+                                  }
+                                });
+                              })
+                        ],
+                      ),
                       Expanded(
                           child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -84,7 +127,6 @@ class _MyHomePageState extends State<HomePage> {
                             Text(_wordTran, style: Styles.textNormal),
                           ])),
                       Row(
-                          //  mainAxisSize: MainAxisSize.max, //根据 parent
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             Text("Word Timer:", style: Styles.textSmall),
@@ -103,10 +145,10 @@ class _MyHomePageState extends State<HomePage> {
                           ]),
                       SizedBox(height: 30),
                       CupertinoSwitch(
-                          value: _switchValue,
+                          value: _isStudyStart,
                           onChanged: (bool value) {
                             setState(() {
-                              _switchValue = value;
+                              _isStudyStart = value;
                             });
                             // 点击按钮 启动关闭Timer
                             if (value) {
@@ -114,6 +156,7 @@ class _MyHomePageState extends State<HomePage> {
                             } else {
                               _cancelTimer();
                             }
+                            // 去掉输入框焦点
                             FocusScope.of(context).requestFocus(FocusNode());
                           }),
                       SizedBox(height: 20)

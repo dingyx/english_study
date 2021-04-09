@@ -74,3 +74,5 @@ flutter:
   assets:
     - assets/data/word.json
     - assets/images/bg.jpg
+    - assets/sound_normal.png
+    - assets/sound_mute.png

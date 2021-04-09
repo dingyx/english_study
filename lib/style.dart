@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
 
 abstract class Styles {
+  //定义文字样式
   static const TextStyle textLarge = TextStyle(
     color: Color.fromRGBO(0, 0, 0, 0.8),
     fontSize: 80,
