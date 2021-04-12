@@ -72,7 +72,7 @@ class _MyHomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     // 初始化数据、TTS
     WordData.init();
-    tts.init("en-US", 1.0, 0.6, 1.2);
+    tts.init("en-US", 1.0, 0.8, 1.2);
 
     return Scaffold(
         body: GestureDetector(
@@ -88,85 +88,81 @@ class _MyHomePageState extends State<HomePage> {
                       fit: BoxFit.cover),
                 ),
                 child: Center(
-                    child: Column(
-                        mainAxisSize: MainAxisSize.max,
-                        children: <Widget>[
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Padding(
-                            padding: EdgeInsets.only(left: 40, top: 40),
-                            child: Text(_wordCount.toString(),
-                                style: Styles.textNormal),
-                          ),
-                          InkWell(
-                              child: Padding(
-                                padding: EdgeInsets.only(right: 40, top: 40),
-                                child: Image.asset(_ttsImgPath,
-                                    width: 40, height: 40),
-                              ),
-                              onTap: () {
-                                _isTTS = !_isTTS;
-                                setState(() {
-                                  if (_isTTS) {
-                                    _ttsImgPath =
-                                        "assets/images/sound_normal.png";
-                                  } else {
-                                    _ttsImgPath =
-                                        "assets/images/sound_mute.png";
-                                  }
-                                });
-                              })
-                        ],
+                    child: Column(mainAxisSize: MainAxisSize.max, children: <
+                        Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.only(left: 40, top: 40),
+                        child: Text(_wordCount.toString(),
+                            style: Styles.textNormal),
                       ),
-                      Expanded(
-                          child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                            Text(_wordStr, style: Styles.textLarge),
-                            Text(_phoneticStr, style: Styles.textNormal),
-                            Text(_wordTran, style: Styles.textNormal),
-                          ])),
-                      Row(
+                      InkWell(
+                          child: Padding(
+                            padding: EdgeInsets.only(right: 40, top: 40),
+                            child:
+                                Image.asset(_ttsImgPath, width: 40, height: 40),
+                          ),
+                          onTap: () {
+                            _isTTS = !_isTTS;
+                            setState(() {
+                              if (_isTTS) {
+                                _ttsImgPath = "assets/images/sound_normal.png";
+                              } else {
+                                _ttsImgPath = "assets/images/sound_mute.png";
+                              }
+                            });
+                          })
+                    ],
+                  ),
+                  Expanded(
+                      child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                            Text("Word Timer:", style: Styles.textSmall),
-                            Container(
-                                width: 60,
-                                child: CupertinoTextField(
-                                    inputFormatters: [
-                                      FilteringTextInputFormatter.allow(RegExp("[0-9]"))
-                                    ],
-                                    textAlign: TextAlign.center,
-                                    controller: _wordEditController)),
-                            SizedBox(width: 30),
-                            Text("Translate Delay:", style: Styles.textSmall),
-                            Container(
-                                width: 60,
-                                child: CupertinoTextField(
-                                    inputFormatters: [
-                                      FilteringTextInputFormatter.allow(RegExp("[0-9]"))
-                                    ],
-                                    textAlign: TextAlign.center,
-                                    controller: _tranEditController)),
-                          ]),
-                      SizedBox(height: 30),
-                      CupertinoSwitch(
-                          value: _isStudyStart,
-                          onChanged: (bool value) {
-                            setState(() {
-                              _isStudyStart = value;
-                            });
-                            // 点击按钮 启动关闭Timer
-                            if (value) {
-                              _startTimer();
-                            } else {
-                              _cancelTimer();
-                            }
-                            // 去掉输入框焦点
-                            FocusScope.of(context).requestFocus(FocusNode());
-                          }),
-                      SizedBox(height: 20)
-                    ])))));
+                        Text(_wordStr, style: Styles.textLarge),
+                        Text(_phoneticStr, style: Styles.textNormal),
+                        Text(_wordTran, style: Styles.textNormal),
+                      ])),
+                  Row(mainAxisAlignment: MainAxisAlignment.center, children: <
+                      Widget>[
+                    Text("Word Timer:", style: Styles.textSmall),
+                    Container(
+                        width: 60,
+                        child: CupertinoTextField(
+                            inputFormatters: [
+                              FilteringTextInputFormatter.allow(RegExp("[0-9]"))
+                            ],
+                            textAlign: TextAlign.center,
+                            controller: _wordEditController)),
+                    SizedBox(width: 30),
+                    Text("Translate Delay:", style: Styles.textSmall),
+                    Container(
+                        width: 60,
+                        child: CupertinoTextField(
+                            inputFormatters: [
+                              FilteringTextInputFormatter.allow(RegExp("[0-9]"))
+                            ],
+                            textAlign: TextAlign.center,
+                            controller: _tranEditController)),
+                  ]),
+                  SizedBox(height: 30),
+                  CupertinoSwitch(
+                      value: _isStudyStart,
+                      onChanged: (bool value) {
+                        setState(() {
+                          _isStudyStart = value;
+                        });
+                        // 点击按钮 启动关闭Timer
+                        if (value) {
+                          _startTimer();
+                        } else {
+                          _cancelTimer();
+                        }
+                        // 去掉输入框焦点
+                        FocusScope.of(context).requestFocus(FocusNode());
+                      }),
+                  SizedBox(height: 20)
+                ])))));
   }
 }

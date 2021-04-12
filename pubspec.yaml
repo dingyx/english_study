@@ -76,3 +76,10 @@ flutter:
     - assets/images/bg.jpg
     - assets/sound_normal.png
     - assets/sound_mute.png
+
+
+  fonts:
+    - family: Arimo
+      fonts:
+        - asset: fonts/Arimo-VariableFont_wght.ttf
+          style: italic
