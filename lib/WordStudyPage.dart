@@ -7,15 +7,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class HomePage extends StatefulWidget {
-  HomePage({Key key, this.title}) : super(key: key);
+class WordStudyPage extends StatefulWidget {
+  WordStudyPage({Key key, this.title}) : super(key: key);
   final String title;
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _WordStudyPageState createState() => _WordStudyPageState();
 }
 
-class _MyHomePageState extends State<HomePage> {
+class _WordStudyPageState extends State<WordStudyPage> {
   TextEditingController _wordEditController = TextEditingController();
   TextEditingController _tranEditController = TextEditingController();
   TTS tts = TTS();
