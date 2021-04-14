@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:english_study/Utils.dart';
 import 'package:english_study/data.dart';
+import 'package:english_study/net_util.dart';
 import 'package:english_study/style.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
