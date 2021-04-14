@@ -16,6 +16,16 @@ class TTS {
     } catch (ignored) {}
   }
 
+  initDefault(){
+    try {
+      flutterTts = FlutterTts();
+      flutterTts.setLanguage("en-US");
+      flutterTts.setVolume(1.0);
+      flutterTts.setSpeechRate(0.8);
+      flutterTts.setPitch(1.0);
+    } catch (ignored) {}
+  }
+
   // speak text
   speak(String text) {
     flutterTts?.speak(text);

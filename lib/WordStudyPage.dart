@@ -72,7 +72,7 @@ class _WordStudyPageState extends State<WordStudyPage> {
   Widget build(BuildContext context) {
     // 初始化数据、TTS
     WordData.init();
-    tts.init("en-US", 1.0, 0.8, 1.2);
+    tts.initDefault();
 
     return Scaffold(
         body: GestureDetector(
