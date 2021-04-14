@@ -76,7 +76,7 @@ flutter:
     - assets/images/bg.jpg
     - assets/sound_normal.png
     - assets/sound_mute.png
-
+    - assets/setting.png
 
   fonts:
     - family: Arimo
