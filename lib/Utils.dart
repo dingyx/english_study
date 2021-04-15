@@ -1,9 +1,15 @@
+import 'dart:math';
+
 import 'package:flutter_tts/flutter_tts.dart';
 
 // 语音合成工具
 class TTS {
   // 初始化语音合成 TTS
   FlutterTts flutterTts;
+
+  TTS(){
+    initDefault();
+  }
 
   // speechRate-语速、pitch-音调
   init(String language, double volume, double speechRate, double pitch) {
@@ -16,7 +22,7 @@ class TTS {
     } catch (ignored) {}
   }
 
-  initDefault(){
+  initDefault() {
     try {
       flutterTts = FlutterTts();
       flutterTts.setLanguage("en-US");
@@ -29,5 +35,13 @@ class TTS {
   // speak text
   speak(String text) {
     flutterTts?.speak(text);
+  }
+}
+
+class Util {
+  // 获取背景图 图片放在阿里云服务器
+  static String getBgUrl() {
+    int random = new Random().nextInt(5);
+    return "https://dingyx.oss-cn-shenzhen.aliyuncs.com/english_study/bg_${random.toString()}.jpg";
   }
 }

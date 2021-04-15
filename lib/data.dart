@@ -35,8 +35,12 @@ var _wordList;
 int _ranInt = 0;
 
 class WordData {
+  WordData() {
+    init();
+  }
+
   // 初始化数据 读取 assets 文件夹下 json
-  static void init() {
+  void init() {
     rootBundle.loadString("assets/data/word.json").then((value) {
       List responseJson = json.decode(value.toString());
       _wordList = responseJson.map((m) => new WordBean.fromJson(m)).toList();
@@ -44,18 +48,18 @@ class WordData {
   }
 
   // 获取单词
-  static String getWord() {
+  String getWord() {
     _ranInt = new Random().nextInt(3876);
     return _wordList[_ranInt].word;
   }
 
   // 获取翻译
-  static String getTran() {
+  String getTran() {
     return _wordList[_ranInt].translate;
   }
 
   // 获取音标
-  static String getPhoneticSymbols() {
+  String getPhoneticSymbols() {
     return _wordList[_ranInt].read;
   }
 }

@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:english_study/Utils.dart';
 import 'package:english_study/data.dart';
-import 'package:english_study/net_util.dart';
 import 'package:english_study/style.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -19,12 +18,16 @@ class WordStudyPage extends StatefulWidget {
 class _WordStudyPageState extends State<WordStudyPage> {
   TextEditingController _wordEditController = TextEditingController();
   TextEditingController _tranEditController = TextEditingController();
+
   TTS tts = TTS();
+  WordData wordData = WordData();
 
   String _ttsImgPath = "assets/images/sound_normal.png";
   String _wordStr = "word";
   String _phoneticStr = "phonetic symbols";
   String _wordTran = "translate";
+
+  String _bgUrl = Util.getBgUrl();
 
   // 单词 Timer 是否启动
   bool _isStudyStart = false;
@@ -49,7 +52,7 @@ class _WordStudyPageState extends State<WordStudyPage> {
       // 显示单词
       setState(() {
         ++_wordCount;
-        _wordStr = WordData.getWord();
+        _wordStr = wordData.getWord();
         _phoneticStr = " ";
         _wordTran = " ";
       });
@@ -60,8 +63,8 @@ class _WordStudyPageState extends State<WordStudyPage> {
       // 延迟显示音标、翻译
       Future.delayed(Duration(seconds: _tranDelay), () {
         setState(() {
-          _phoneticStr = WordData.getPhoneticSymbols();
-          _wordTran = WordData.getTran();
+          _phoneticStr = wordData.getPhoneticSymbols();
+          _wordTran = wordData.getTran();
         });
       });
     });
@@ -74,10 +77,6 @@ class _WordStudyPageState extends State<WordStudyPage> {
 
   @override
   Widget build(BuildContext context) {
-    // 初始化数据、TTS
-    WordData.init();
-    tts.initDefault();
-
     return Scaffold(
         body: GestureDetector(
             // 点击外部时 输入框失去焦点
@@ -88,76 +87,87 @@ class _WordStudyPageState extends State<WordStudyPage> {
             child: Container(
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                      image: AssetImage("assets/images/bg.jpg"),
-                      fit: BoxFit.cover),
+                      image: NetworkImage(_bgUrl), fit: BoxFit.cover),
                 ),
                 child: Center(
-                    child: Column(
-                        mainAxisSize: MainAxisSize.max,
-                        children: <Widget>[
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          InkWell(
-                              child: Padding(
-                                padding: EdgeInsets.only(left: 40, top: 40),
-                                child: Image.asset(_ttsImgPath,
-                                    width: 40, height: 40),
-                              ),
-                              onTap: () {
-                                _isTTS = !_isTTS;
-                                setState(() {
-                                  if (_isTTS) {
-                                    _ttsImgPath =
-                                        "assets/images/sound_normal.png";
-                                  } else {
-                                    _ttsImgPath =
-                                        "assets/images/sound_mute.png";
-                                  }
-                                });
-                              }),
-                          Padding(
-                            padding: EdgeInsets.only(top: 40),
-                            child: Text(_wordCount.toString(),
-                                style: Styles.textNormal),
+                    child: Column(mainAxisSize: MainAxisSize.max, children: <
+                        Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      InkWell(
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 40, top: 40),
+                            child:
+                                Image.asset(_ttsImgPath, width: 40, height: 40),
                           ),
-                          InkWell(
-                              child: Padding(
-                                padding: EdgeInsets.only(right: 40, top: 40),
-                                child: Image.asset("assets/images/setting.png",
-                                    width: 34, height: 34),
-                              ),
-                              onTap: () {
-                                _showDialog(context);
-                              }),
-                        ],
-                      ),
-                      Expanded(
-                          child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                            Text(_wordStr, style: Styles.textLarge),
-                            Text(_phoneticStr, style: Styles.textNormal),
-                            Text(_wordTran, style: Styles.textNormal),
-                          ])),
-                      SizedBox(height: 30),
-                      CupertinoSwitch(
-                          value: _isStudyStart,
-                          onChanged: (bool value) {
+                          onTap: () {
+                            _isTTS = !_isTTS;
                             setState(() {
-                              _isStudyStart = value;
+                              if (_isTTS) {
+                                _ttsImgPath = "assets/images/sound_normal.png";
+                              } else {
+                                _ttsImgPath = "assets/images/sound_mute.png";
+                              }
                             });
-                            // 点击按钮 启动关闭Timer
-                            if (value) {
-                              _startTimer();
-                            } else {
-                              _cancelTimer();
-                            }
-                            // 去掉输入框焦点
-                            FocusScope.of(context).requestFocus(FocusNode());
                           }),
-                      SizedBox(height: 20)
-                    ])))));
+                      Padding(
+                        padding: EdgeInsets.only(top: 40),
+                        child: Text(_wordCount.toString(),
+                            style: Styles.textNormal),
+                      ),
+                      InkWell(
+                          child: Padding(
+                            padding: EdgeInsets.only(right: 40, top: 40),
+                            child: Image.asset("assets/images/setting.png",
+                                width: 34, height: 34),
+                          ),
+                          onTap: () {
+                            _showDialog(context);
+                          }),
+                    ],
+                  ),
+                  Expanded(
+                      child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                        Text(_wordStr, style: Styles.textLarge),
+                        Text(_phoneticStr, style: Styles.textNormal),
+                        Text(_wordTran, style: Styles.textNormal),
+                      ])),
+                  SizedBox(height: 30),
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        SizedBox(width: 74),
+                        CupertinoSwitch(
+                            value: _isStudyStart,
+                            onChanged: (bool value) {
+                              setState(() {
+                                _isStudyStart = value;
+                              });
+                              // 点击按钮 启动关闭Timer
+                              if (value) {
+                                _startTimer();
+                              } else {
+                                _cancelTimer();
+                              }
+                              // 去掉输入框焦点
+                              FocusScope.of(context).requestFocus(FocusNode());
+                            }),
+                        InkWell(
+                            child: Padding(
+                                padding: EdgeInsets.only(right: 40),
+                                child: Image.asset("assets/images/change.png",
+                                    width: 34, height: 34)),
+                            onTap: () {
+                              setState(() {
+                                _bgUrl = Util.getBgUrl();
+                              });
+                            }),
+                      ]),
+                  SizedBox(height: 20)
+                ])))));
   }
 
   // 点击弹出设置框
