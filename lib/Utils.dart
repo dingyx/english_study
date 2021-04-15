@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 
 // 语音合成工具
@@ -7,7 +8,7 @@ class TTS {
   // 初始化语音合成 TTS
   FlutterTts flutterTts;
 
-  TTS(){
+  TTS() {
     initDefault();
   }
 
@@ -38,10 +39,22 @@ class TTS {
   }
 }
 
-class Util {
+class ImageUtil {
   // 获取背景图 图片放在阿里云服务器
   static String getBgUrl() {
     int random = new Random().nextInt(5);
     return "https://dingyx.oss-cn-shenzhen.aliyuncs.com/english_study/bg_${random.toString()}.jpg";
   }
+}
+
+
+class ScreenUtil {
+
+  // 判断竖屏还是横屏
+  static bool isVerticalScreen(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
+    return height > width;
+  }
+
 }

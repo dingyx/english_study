@@ -3,9 +3,18 @@ import 'package:flutter/widgets.dart';
 
 abstract class Styles {
   //定义文字样式
-  static const TextStyle textLarge = TextStyle(
+  static const TextStyle textPCLarge = TextStyle(
     color: Color.fromRGBO(0, 0, 0, 0.8),
     fontSize: 80,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.normal,
+    fontFamily: 'Arimo',
+  );
+
+
+  static const TextStyle textPhoneLarge = TextStyle(
+    color: Color.fromRGBO(0, 0, 0, 0.8),
+    fontSize: 28,
     fontStyle: FontStyle.normal,
     fontWeight: FontWeight.normal,
     fontFamily: 'Arimo',

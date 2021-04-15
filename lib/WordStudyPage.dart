@@ -27,7 +27,7 @@ class _WordStudyPageState extends State<WordStudyPage> {
   String _phoneticStr = "phonetic symbols";
   String _wordTran = "translate";
 
-  String _bgUrl = Util.getBgUrl();
+  String _bgUrl = ImageUtil.getBgUrl();
 
   // 单词 Timer 是否启动
   bool _isStudyStart = false;
@@ -131,7 +131,10 @@ class _WordStudyPageState extends State<WordStudyPage> {
                       child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                        Text(_wordStr, style: Styles.textLarge),
+                        Text(_wordStr,
+                            style: ScreenUtil.isVerticalScreen(context)
+                                ? Styles.textPhoneLarge
+                                : Styles.textPCLarge),
                         Text(_phoneticStr, style: Styles.textNormal),
                         Text(_wordTran, style: Styles.textNormal),
                       ])),
@@ -162,7 +165,7 @@ class _WordStudyPageState extends State<WordStudyPage> {
                                     width: 34, height: 34)),
                             onTap: () {
                               setState(() {
-                                _bgUrl = Util.getBgUrl();
+                                _bgUrl = ImageUtil.getBgUrl();
                               });
                             }),
                       ]),
