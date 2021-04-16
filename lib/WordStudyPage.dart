@@ -90,59 +90,60 @@ class _WordStudyPageState extends State<WordStudyPage> {
                       image: NetworkImage(_bgUrl), fit: BoxFit.cover),
                 ),
                 child: Center(
-                    child: Column(mainAxisSize: MainAxisSize.max, children: <
-                        Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      InkWell(
-                          child: Padding(
-                            padding: EdgeInsets.only(left: 40, top: 40),
-                            child:
-                                Image.asset(_ttsImgPath, width: 40, height: 40),
+                    child: Column(
+                        mainAxisSize: MainAxisSize.max,
+                        children: <Widget>[
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          InkWell(
+                              child: Padding(
+                                padding: EdgeInsets.only(left: 40, top: 40),
+                                child: Image.asset(_ttsImgPath,
+                                    width: 40, height: 40),
+                              ),
+                              onTap: () {
+                                _isTTS = !_isTTS;
+                                setState(() {
+                                  if (_isTTS) {
+                                    _ttsImgPath =
+                                        "assets/images/sound_normal.png";
+                                  } else {
+                                    _ttsImgPath =
+                                        "assets/images/sound_mute.png";
+                                  }
+                                });
+                              }),
+                          Padding(
+                            padding: EdgeInsets.only(top: 40),
+                            child: Text(_wordCount.toString(),
+                                style: Styles.textNormal),
                           ),
-                          onTap: () {
-                            _isTTS = !_isTTS;
-                            setState(() {
-                              if (_isTTS) {
-                                _ttsImgPath = "assets/images/sound_normal.png";
-                              } else {
-                                _ttsImgPath = "assets/images/sound_mute.png";
-                              }
-                            });
-                          }),
-                      Padding(
-                        padding: EdgeInsets.only(top: 40),
-                        child: Text(_wordCount.toString(),
-                            style: Styles.textNormal),
+                          InkWell(
+                              child: Padding(
+                                padding: EdgeInsets.only(right: 40, top: 40),
+                                child: Image.asset("assets/images/setting.png",
+                                    width: 34, height: 34),
+                              ),
+                              onTap: () {
+                                _showDialog(context);
+                              }),
+                        ],
                       ),
-                      InkWell(
-                          child: Padding(
-                            padding: EdgeInsets.only(right: 40, top: 40),
-                            child: Image.asset("assets/images/setting.png",
-                                width: 34, height: 34),
-                          ),
-                          onTap: () {
-                            _showDialog(context);
-                          }),
-                    ],
-                  ),
-                  Expanded(
-                      child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                        Text(_wordStr,
-                            style: ScreenUtil.isVerticalScreen(context)
-                                ? Styles.textPhoneLarge
-                                : Styles.textPCLarge),
-                        Text(_phoneticStr, style: Styles.textNormal),
-                        Text(_wordTran, style: Styles.textNormal),
-                      ])),
-                  SizedBox(height: 30),
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        SizedBox(width: 74),
+                      Expanded(
+                          child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                            Text(_wordStr,
+                                style: ScreenUtil.isVerticalScreen(context)
+                                    ? Styles.textPhoneLarge
+                                    : Styles.textPCLarge),
+                            Text(_phoneticStr, style: Styles.textNormal),
+                            Text(_wordTran, style: Styles.textNormal),
+                          ])),
+                      SizedBox(height: 30),
+                      Row(children: <Widget>[
+                        Expanded(child: SizedBox(height: 30)),
                         CupertinoSwitch(
                             value: _isStudyStart,
                             onChanged: (bool value) {
@@ -158,6 +159,7 @@ class _WordStudyPageState extends State<WordStudyPage> {
                               // 去掉输入框焦点
                               FocusScope.of(context).requestFocus(FocusNode());
                             }),
+                        SizedBox(width: 20),
                         InkWell(
                             child: Padding(
                                 padding: EdgeInsets.only(right: 40),
@@ -169,8 +171,8 @@ class _WordStudyPageState extends State<WordStudyPage> {
                               });
                             }),
                       ]),
-                  SizedBox(height: 20)
-                ])))));
+                      SizedBox(height: 20)
+                    ])))));
   }
 
   // 点击弹出设置框
