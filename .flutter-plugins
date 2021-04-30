@@ -1,2 +1,6 @@
 # This is a generated file; do not edit or check into version control.
-flutter_tts=D:\\flutter\\flutter_sdk\\flutter\\.pub-cache\\hosted\\pub.flutter-io.cn\\flutter_tts-3.0.0\\
+audioplayers=D:\\flutter\\flutter_sdk\\flutter\\.pub-cache\\hosted\\pub.flutter-io.cn\\audioplayers-0.18.3\\
+path_provider=D:\\flutter\\flutter_sdk\\flutter\\.pub-cache\\hosted\\pub.flutter-io.cn\\path_provider-2.0.1\\
+path_provider_linux=D:\\flutter\\flutter_sdk\\flutter\\.pub-cache\\hosted\\pub.flutter-io.cn\\path_provider_linux-2.0.0\\
+path_provider_macos=D:\\flutter\\flutter_sdk\\flutter\\.pub-cache\\hosted\\pub.flutter-io.cn\\path_provider_macos-2.0.0\\
+path_provider_windows=D:\\flutter\\flutter_sdk\\flutter\\.pub-cache\\hosted\\pub.flutter-io.cn\\path_provider_windows-2.0.1\\

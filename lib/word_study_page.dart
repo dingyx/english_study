@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:english_study/Utils.dart';
+import 'package:english_study/utils.dart';
 import 'package:english_study/data.dart';
 import 'package:english_study/style.dart';
 import 'package:flutter/cupertino.dart';
@@ -19,7 +19,7 @@ class _WordStudyPageState extends State<WordStudyPage> {
   TextEditingController _wordEditController = TextEditingController();
   TextEditingController _tranEditController = TextEditingController();
 
-  TTS tts = TTS();
+  TTSUtil ttsUtil = TTSUtil();
   WordData wordData = WordData();
 
   String _ttsImgPath = "assets/images/sound_normal.png";
@@ -45,6 +45,12 @@ class _WordStudyPageState extends State<WordStudyPage> {
   int _wordTimer = 8;
   int _tranDelay = 5;
 
+
+  void initState() {
+    super.initState();
+    ttsUtil.init();
+  }
+
   // 启动定时器
   void _startTimer() {
     // 异常输入时 采用默认值
@@ -58,7 +64,7 @@ class _WordStudyPageState extends State<WordStudyPage> {
       });
       // 朗读读单词
       if (_isTTS) {
-        tts.speak(_wordStr);
+        ttsUtil.speak(_wordStr);
       }
       // 延迟显示音标、翻译
       Future.delayed(Duration(seconds: _tranDelay), () {
@@ -74,6 +80,7 @@ class _WordStudyPageState extends State<WordStudyPage> {
   void _cancelTimer() {
     _timer?.cancel();
   }
+
 
   @override
   Widget build(BuildContext context) {
